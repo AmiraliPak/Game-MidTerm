@@ -36,7 +36,12 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetKey(KeyCode.D))
+        if (rb.position.x <= MIN_X)
+            rb.transform.position = new Vector3(MAX_X - 0.01f, rb.transform.position.y);
+        if (rb.position.x >= MAX_X)
+            rb.transform.position = new Vector3(MIN_X + 0.01f, rb.transform.position.y);
+
+        if (Input.GetKey(KeyCode.D))
         {
             Debug.Log("move right");
             rb.transform.position += new Vector3(horizontalMovement * Time.deltaTime, 0);
@@ -95,7 +100,7 @@ public class PlayerController : MonoBehaviour
         bool closeToPrev = false;
         var newPos = new Vector3(randX, y);
         if (lastPlatform != null)
-            closeToPrev = (newPos - lastPlatform.transform.position).magnitude < minimumDistanceBetweenPlatforms;
+            closeToPrev = newPos.y-lastPlatform.transform.position.y<0.01f || ((newPos - lastPlatform.transform.position).magnitude < minimumDistanceBetweenPlatforms);
         
 
         if (!closeToPrev)
